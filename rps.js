@@ -1,95 +1,91 @@
-let options = ["rock","paper","scissors"]
-let x = " "
-function comupterPlay(x){
-    computersOption = Math.floor(Math.random() * options.length )
-    return options[computersOption]
-}
-let computersChoice = comupterPlay(x)
-console.log(computersChoice)
+    let options = ["rock","paper","scissors"]
+    let x = " "
+    function comupterPlay(x){
+        computersOption = Math.floor(Math.random() * options.length )
+        return options[computersOption]
+    }
+    let computersChoice = comupterPlay(x)
+    console.log(computersChoice)
 
-let playersChoice = " "
+    let wraper = document.querySelector('#playerChoice')
 
-alert("This is a clasic rock,paper,scissors game. Navigate through the game pressing enter")
-alert("Its a best of 3 game to determine the winner")
-let computerWins = 0
-let playerWins = 0
-
-
-for(let i = 0; i<3; i++){
-    alert("Round " + (i+1))
-    do{
-        let userOption = prompt("Type rock, paper or scissors to start the game"," ")
-        playersChoice = userOption.toLocaleLowerCase()
-        console.log(playersChoice)
-
-        if( (playersChoice != "rock") && (playersChoice != "paper") && (playersChoice != "scissors") ){
-            alert("Wrong input. Try again")
-        }
-
-    }while( (playersChoice != "rock") && (playersChoice != "paper") && (playersChoice != "scissors") )
-        
-    alert("Computers random choice is: " + computersChoice)
-
-    switch (playersChoice){
-        case "rock" :
-            if(computersChoice == "rock"){
-                alert("Its a tie !")
-                alert("Current score: " + "Computer:" + computerWins + "-Player:" + playerWins)
-                break
-            }else if(computersChoice == "scissors"){
-                alert("You win !")
-                playerWins += 1
-                alert("Current score: " + "Computer:" + computerWins + "-Player:" + playerWins)
-                break
-            }else{
-                alert("Computer wins ")
-                computerWins +=1
-                alert("Current score: " + "Computer:" + computerWins + "-Player:" + playerWins)
-                break
-            }
-        case "paper" :
-            if(computersChoice == "rock"){
-                alert("You win !")
-                playerWins +=1
-                alert("Current score: " + "Computer:" + computerWins + "-Player:" + playerWins)
-                break
-            }else if(computersChoice == "scissors"){
-                alert("Computer wins")
-                computerWins +=1
-                alert("Current score: " + "Computer:" + computerWins + "-Player:" + playerWins)
-                break
-            }else{
-                alert("It's a tie !")
-                alert("Current score: " + "Computer:" + computerWins + "-Player:" + playerWins)
-                break
-            }
-        case "scissors" :
-            if(computersChoice == "rock"){
-                alert("Computer wins")
-                computerWins +=1
-                alert("Current score: " + "Computer:" + computerWins + "-Player:" + playerWins)
-                break
-            }else if(computersChoice == "scissors"){
-                alert("It's a tie !")
-                alert("Current score: " + "Computer:" + computerWins + "-Player:" + playerWins)
-                break
-            }else{
-                alert("You win !")
-                playerWins +=1
-                alert("Current score: " + "Computer:" + computerWins + "-Player:" + playerWins)
-                break
-            }
+    let rockButton = document.querySelector('#rock')
+    rockButton.addEventListener('click',rockPlayround)
+    function rockPlayround() {
+        let theResult = playround("rock",computersChoice)
+        displayResult(theResult,'rock')
 
     }
 
-}
+    let paperButton = document.querySelector('#paper')
+    paperButton.addEventListener('click',paperPlayround)
+    function paperPlayround() {
+        let theResult = playround("paper",computersChoice)
+        displayResult(theResult,'paper')
 
-if(playerWins>computerWins){
-    alert("Congratulations, you won the game !!!")
-}else if(computerWins>playerWins){
-    alert("Computer wins the game, better luck next time.")
-}else{
-    alert("It seems like you cant beat a computer")
-}
 
-alert("If you want to play this game again refresh this page")
+    }
+
+    let scissorsButton = document.querySelector('#scissors')
+    scissorsButton.addEventListener('click',scissorsPlayround)
+    function scissorsPlayround() {
+        let theResult = playround("scissors",computersChoice)
+        displayResult(theResult,'scissors')
+
+    }
+
+
+    let playersChoice 
+
+    function playround(playersChoice,computersChoice){
+        switch (playersChoice){
+            case "rock" :
+                if(computersChoice == "rock"){
+                    return 'tie'
+                }else if(computersChoice == "scissors"){
+                    return 'rock'
+                }else{
+                    return 'paper'
+                }
+            case "paper" :
+                if(computersChoice == "rock"){
+                    return 'paper'
+                }else if(computersChoice == "scissors"){
+                    return 'scissors'
+                }else{
+                    return 'tie'
+                }
+            case "scissors" :
+                if(computersChoice == "rock"){
+                    return 'rock'
+                }else if(computersChoice == "scissors"){
+                    return 'tie'
+                }else{
+                    return 'scissors'
+                }
+
+        }
+    }
+
+    function displayResult(aResult,playersPlay){
+        let computersPlay = document.createElement('div')
+        let playerPlays = document.createElement('div')
+        playerPlays.textContent = 'You chose ' + playersPlay
+        computersPlay.textContent = 'The computer picks ' + computersChoice
+        wraper.appendChild(playerPlays)
+        wraper.appendChild(computersPlay)
+        displayWinner(aResult,computersChoice,playersPlay)
+
+    }
+
+    function displayWinner(aResult,npc,pc){
+        if (pc == npc ){
+            let result = document.createElement('div')
+            result.textContent = ' Its a tie '
+            wraper.appendChild(result)
+        }else {
+            let result = document.createElement('div')
+            result.textContent = ' Winner is ' + aResult 
+            wraper.appendChild(result)
+        }
+    }
